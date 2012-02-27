@@ -40,6 +40,7 @@
   <script type="text/javascript" src="{% static "lotte/js/jquery.jeditable.mini.js" %}"></script>
   <script type="text/javascript" src="{% static "lotte/js/jquery.spellchecker.js" %}"></script>
 
+  {% hook "glossary_highlight.html" glossaryjs %}
   {% if RTL %}
     <style type="text/css">
         textarea.rtl{unicode-bidi: embed; direction: rtl;}
@@ -464,6 +465,7 @@
                     if (textareaHeight < srcHeight)
                         $(this).TextAreaExpander(srcHeight);
                 });
+                {% hook "glossary_highlight.html" fndrawcallback %}
 	    }
         }).fnSetFilteringDelay(500);
 
