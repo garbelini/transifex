@@ -41,10 +41,12 @@ jQuery(document).ready(function() {
     {% endif %}
   </div>
 
-  <div id="currently_working_on">
-    <h3 class="sh-label">{% trans "Currently working on" %}</h3>
+  <div id="recommendations">
+    <h3 class="sh-label">{% trans "Recommendations" %}</h3>
+    {% hook "recommendation_list.html" %}
   </div>
 
+  
   <div id="recent_activity">
     <h3 class="sh-label">{% trans "Recent team activity" %}</h3>
 
@@ -63,8 +65,5 @@ jQuery(document).ready(function() {
     {% endif %}
   </div>
 
-  <div id="recommendations">
-    <h3 class="sh-label">{% trans "Recommendations" %}</h3>
-    {% hook "recommendation_list.html" %}
-  </div>
+
 {% endif %}
