@@ -17,16 +17,16 @@ jQuery(document).ready(function() {
 {% if selected_user %}
   {% include "teams/_user_profile_id.html" with user=selected_user %}
 
-  <div id="actions">
+  <div id="actions" class="clearfix">
     {% if action == 'edit' %}
       <div class="action">
         {% hook "recommend_button.html" %}
-      </div
+      </div>
 
       {% if is_coordinator or is_maintainer %}
         {% if selected_user in team.members.all %}
           <div id="action">
-            <a href="{% url team_members_remove project.slug language.code selected_user.username %}">Remove from team</a>
+            <a href="{% url team_members_remove project.slug language.code selected_user.username %}" class="buttonized fixedw">Remove from team</a>
           </div>
         {% endif %}
       {% endif %}
@@ -48,7 +48,7 @@ jQuery(document).ready(function() {
   <div id="recent_activity">
     <h3 class="sh-label">{% trans "Recent team activity" %}</h3>
 
-    {% get_public_log 5 as action_log for_user selected_user %}
+    {% get_public_log 3 as action_log for_user selected_user %}
     {% if not action_log %}
       <p class="i16 infomsg">{% trans 'No public actions yet' %}</p>
     {% else %}

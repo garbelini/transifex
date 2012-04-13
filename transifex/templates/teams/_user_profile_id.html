@@ -1,28 +1,39 @@
 <div id="user_header">
-  <a href="{% url profile_public user.username %}">
-    <img width="40" height="40" alt="{{ user.username }}" src="{{ user.profile.get_mugshot_url }}"/>
-    <div>{{ user.username }}</div>
-    {% if user.first_name or user.last_name %}
-      ({{ user.first_name }} {{ user.last_name }})
-    {% endif %}
-  </a>
 
-  <div id="location">
-    {% with location=user.profile.location %}
-      {% if location %}
-        From: {{ location }} </span>
+  <img width="48" height="48" alt="{{ user.username }}" src="{{ user.profile.get_mugshot_url }}"/>
+
+  <div id="user-info">
+
+    <a href="{% url profile_public user.username %}" class="clearfix">
+      <div id="username">{{ user.username }}</div>
+      <span class="fullname">
+      {% if user.first_name or user.last_name %}
+        ({{ user.first_name }} {{ user.last_name }})
       {% endif %}
-    {% endwith %}
+      </span>
+    </a>
+  
+    <div id="user-details" class="clearfix" >
+      <div id="location">
+        {% with location=user.profile.location %}
+          {% if location %}
+            From: {{ location }} </span>
+          {% endif %}
+        {% endwith %}
+      </div>
+    
+      <div id="speaks">
+        {% with langs=user.profile.languages.all %}
+          {% if langs %}
+            Speaks:
+            {% for lang in langs %}
+              <span class="lang">{{ lang.name }} </span>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+    
   </div>
 
-  <div id="speaks">
-    {% with langs=user.profile.languages.all %}
-      {% if langs %}
-        Speaks:
-        {% for lang in langs %}
-          <span class="lang">{{ lang.name }} </span>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-  </div>
 </div>
