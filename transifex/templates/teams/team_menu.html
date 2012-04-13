@@ -76,7 +76,7 @@
     {% endif %}
     {% hook "team.html" menu %}
     {% if perms.projects.change_team or is_coordinator %}
-    <li class="{% if project_team_form %}selected{% endif %}"><a href="{% url team_update project.slug language.code %}">{% trans "Edit language-team" %}</a></li>
+    <li class="{% if project_team_form %}selected{% endif %}"><a href="{% url team_update project.slug language.code %}">{% trans "Admin" %}</a></li>
     {% endif %}
   </ul>
 </div>
