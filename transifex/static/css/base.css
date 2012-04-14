@@ -324,7 +324,7 @@ background-image: -webkit-linear-gradient(top, #f2f2f2 0%, #E1E1E1 100%);
 background-image: linear-gradient(top, #f2f2f2 0%, #E1E1E1 100%);}
 #lefty .drawerli{padding: 12px 5px;font-size: 1em; color: #999;border-bottom: 1px solid #e1e1e1;}
 
-#drawerbox #user_header {margin-bottom: 1em;}
+#drawerbox #user_header {min-height:50px;margin-bottom: 2em;}
 #drawerbox #user_header img{float: left;position: absolute;border:1px solid #999;}
 #drawerbox #user_header #user-info{margin-left: 60px;position: relative;}
 #drawerbox #user_header #user-details>div{float:left;margin-right:10px;} 

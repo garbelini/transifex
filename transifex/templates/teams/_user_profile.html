@@ -19,10 +19,7 @@ jQuery(document).ready(function() {
 
   <div id="actions" class="clearfix">
     {% if action == 'edit' %}
-      <div class="action">
-        {% hook "recommend_button.html" %}
-      </div>
-
+    
       {% if is_coordinator or is_maintainer %}
         {% if selected_user in team.members.all %}
           <div id="action">
@@ -42,14 +39,19 @@ jQuery(document).ready(function() {
   </div>
 
   <div id="recommendations">
-    <h3 class="sh-label">{% trans "Recommendations" %}</h3>
+    <div class="separate-header clearfix">
+      <h3 class="sh-label">{% trans "Recommendations" %}</h3>
+      <div class="separate-buttons">{% hook "recommend_button.html" %}</div>
+    </div>
+    
     {% hook "recommendation_list.html" %}
   </div>
 
   
   <div id="recent_activity">
-    <h3 class="sh-label">{% trans "Recent team activity" %}</h3>
-
+    <div class="separate-header clearfix">
+      <h3 class="sh-label">{% trans "Recent team activity" %}</h3>
+    </div>
     {% get_public_log 3 as action_log for_user selected_user %}
     {% if not action_log %}
       <p class="i16 infomsg">{% trans 'No public actions yet' %}</p>
