@@ -89,7 +89,7 @@ jQuery(document).ready(function() {
         </a>
         {% endif %}
         {% if is_coordinator %}
-        <span style="float:right;position:relative;top:-5px;">
+        <span style="float:right;position:relative;top:-38px;right:10px;">
           <form class="microform" method="post" action="{% url team_join_approve project.slug language.code u.username %}">{% csrf_token %}
             <input name="team_join_approve" class="i16 submit buttonized blist" type="submit" value="{% trans "Accept" %}"/>
           </form>
