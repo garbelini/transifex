@@ -19,6 +19,7 @@ from django.utils.translation import ugettext as _
 
 from django.utils import simplejson
 from djpjax import pjax
+import re
 
 from actionlog.models import action_logging
 from transifex.languages.models import Language
@@ -270,6 +271,7 @@ def _team_members_common_context(request, project_slug, language_code):
         'project': project, 'language': language, 'team': team,
         'selected_user': selected_user,
         'next_url': request.get_full_path(),
+        'next_url_clean': re.sub(r'\?[^?]*$', '', request.get_full_path()),
         'project_team_members': True,
     }
 
