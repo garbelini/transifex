@@ -26,10 +26,7 @@
           <a href="{% url team_members_edit project.slug language.code %}?username={{member.username}}" class="user {% if selected_user.username == member.username %}active{% endif %}">
             {{ member.username }}
             {% if member.first_name or member.last_name %}
-              <span class="fullname">
-                ({{ member.first_name }}
-                {{ member.last_name }})
-              </span>
+              (<span class="fullname">{{ member.get_full_name }}</span>)
             {% endif %}
           </a>
         </li>
@@ -40,10 +37,7 @@
           <a href="{% url team_members project.slug language.code %}?username={{member.username}}" class="user {% if selected_user.username == member.username %}active{% endif %}">
             {{ member.username }}
             {% if member.first_name or member.last_name %}
-              <span class="fullname">
-                ({{ member.first_name }}
-                {{ member.last_name }})
-              </span>
+              (<span class="fullname">{{ member.get_full_name }}</span>)
             {% endif %}
           </a>
         </li>
