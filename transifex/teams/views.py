@@ -288,6 +288,7 @@ def team_members_index(request, project_slug, language_code):
         member_fields = ['username', 'first_name', 'last_name']
         all_members = team.all_members().only(*member_fields)
 
+
     context.update({'all_members': all_members, 'action': 'show'})
     return TemplateResponse(request, 'teams/team_members.html', context)
 
@@ -307,7 +308,8 @@ def team_members_edit(request, project_slug, language_code):
 
     # shouldn't allow /edit?username=moufadios if moufadios not a team member
     if team and context['selected_user']:
-        if not team.all_members().filter(id=context['selected_user'].id).exists():
+        kwargs = { 'id': context['selected_user'].id }
+        if not team.all_members().filter(**kwargs).exists():
             raise Http404
 
     team_access_requests = None
@@ -498,7 +500,7 @@ pr_team_add_member_perm=(("granular", "project_perm.coordinate_team"),)
 @transaction.commit_on_success
 def team_join_approve(request, project_slug, language_code, username):
     if not request.is_ajax() or request.method != "POST":
-		return HttpResponseRedirect(reverse("team_detail", 
+		return HttpResponseRedirect(reverse("team_detail",
 	  		args=[project_slug, language_code]))
 
     # we can haz ajax post
