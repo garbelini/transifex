@@ -321,23 +321,17 @@ def team_members_edit(request, project_slug, language_code):
     team = context['team']
 
     # shouldn't allow /edit?username=moufadios if moufadios not a team member
-    if team and context['selected_user']:
+    if context['selected_user']:
         kwargs = { 'id': context['selected_user'].id }
         if not team.all_members().filter(**kwargs).exists():
             raise Http404
 
-    team_access_requests = None
-    user_access_request = None
-    all_members = None
-
-    if team:
-        manager = TeamAccessRequest.objects
-        team_access_requests = manager.filter(team__pk=team.pk)
-        if request.user.is_authenticated():
-            rel_manager = request.user.teamaccessrequest_set
-            user_access_request = rel_manager.filter(team__pk=team.pk)
-        else:
-            user_access_request = None
+    team_access_requests = TeamAccessRequest.objects.filter(team__pk=team.pk)
+    if request.user.is_authenticated():
+        rel_manager = request.user.teamaccessrequest_set
+        user_access_request = rel_manager.filter(team__pk=team.pk)
+    else:
+        user_access_request = None
 
     members = _filter_members(context['team'], members_filter)
     members = members.only('username', 'first_name', 'last_name')
