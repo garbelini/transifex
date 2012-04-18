@@ -294,6 +294,18 @@ def team_members_index(request, project_slug, language_code):
     context.update({'all_members': all_members, 'action': 'show'})
     return TemplateResponse(request, 'teams/team_members.html', context)
 
+def _filter_members(team, members_filter):
+    """
+    Isolating member filtering functionality.
+    """
+    if members_filter == None:
+        members = team.all_members()
+    elif members_filter == 'coordinators':
+        members = team.coordinators.all()
+    elif members_filter == 'reviewers':
+        members = team.reviewers.all()
+    return members
+
 @access_off(team_off)
 @one_perm_required_or_403(pr_project_private_perm,
     (Project, 'slug__exact', 'project_slug'), anonymous_access=False)
