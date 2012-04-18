@@ -284,14 +284,13 @@ def team_members_index(request, project_slug, language_code):
     Allows everyone to list the members of a team
     """
     context = _team_members_common_context(request, project_slug, language_code)
+    members_filter = request.GET.get('filter', None)
 
-    team = context['team']
-    if team:
-        member_fields = ['username', 'first_name', 'last_name']
-        all_members = team.all_members().only(*member_fields)
+    members = _filter_members(context['team'], members_filter)
+    members = members.only('username', 'first_name', 'last_name')
+    members = members.order_by('username')
 
-
-    context.update({'all_members': all_members, 'action': 'show'})
+    context.update({'members': members, 'action': 'show'})
     return TemplateResponse(request, 'teams/team_members.html', context)
 
 def _filter_members(team, members_filter):
@@ -318,6 +317,7 @@ def team_members_edit(request, project_slug, language_code):
     - unmember members
     """
     context = _team_members_common_context(request, project_slug, language_code)
+    members_filter = request.GET.get('filter', None)
     team = context['team']
 
     # shouldn't allow /edit?username=moufadios if moufadios not a team member
@@ -339,11 +339,12 @@ def team_members_edit(request, project_slug, language_code):
         else:
             user_access_request = None
 
-        member_fields = ['username', 'first_name', 'last_name']
-        all_members = team.all_members().only(*member_fields)
+    members = _filter_members(context['team'], members_filter)
+    members = members.only('username', 'first_name', 'last_name')
+    members = members.order_by('username')
 
     context.update({
-        'all_members': all_members,
+        'members': members,
         'team_access_requests': team_access_requests,
         'user_access_request': user_access_request,
         'action': 'edit',

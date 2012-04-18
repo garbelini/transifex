@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if all_members %}
+{% if members %}
 <script type="text/javascript">
   jQuery(document).ready(function() {
     /* handles the 'drawer' effect */
@@ -19,9 +19,15 @@
 
   <h3 class="header drawer">{% trans "Team members:" %}</h3>
 
+  <ul>
+    <li><a href="{{ next_url_clean }}">All</a></li>
+    <li><a href="{{ next_url_clean }}?filter=coordinators">Coordinators</a></li>
+    <li><a href="{{ next_url_clean }}?filter=reviewers">Reviewers</a></li>
+  </ul>
+
   <ul class="list drawer">
     {% if is_coordinator or is_maintainer %}
-      {% for member in all_members %}
+      {% for member in members %}
         <li id="{{ member.id }}" class="user">
           <a href="{% url team_members_edit project.slug language.code %}?username={{member.username}}" class="user {% if selected_user.username == member.username %}active{% endif %}">
             {{ member.username }}
@@ -32,7 +38,7 @@
         </li>
       {% endfor %}
     {% else %}
-      {% for member in all_members %}
+      {% for member in members %}
         <li id="{{ member.id }}" class="user">
           <a href="{% url team_members project.slug language.code %}?username={{member.username}}" class="user {% if selected_user.username == member.username %}active{% endif %}">
             {{ member.username }}
