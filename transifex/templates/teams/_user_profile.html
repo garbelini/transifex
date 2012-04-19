@@ -38,19 +38,25 @@ jQuery(document).ready(function() {
   <div id="actions" class="clearfix">
     {% if action == 'edit' %}
 
+          <div id="action">
           {% if is_coordinator or is_maintainer %}
-              <div id="action">
+            {% if request.user != selected_user %}
                 <a href="{% url team_members_remove project.slug language.code selected_user.username %}" class="buttonized fixedw">Remove from team</a>
-                <ul>
-                  <li><a href='' data-member-type='translator' class="js-change_member_type">Translator</a></li>
-                  <li><a href='' data-member-type='reviewer' class="js-change_member_type">Reviewer</a></li>
-                  {% if is_maintainer  %}
-                      <li><a href='' data-member-type='coordinator' class="js-change_member_type">Coordinator</a></li>
-                  {% endif %}
-                </ul>
-              </div>
-
+            {% endif %}
+            <ul>
+              <li><a href='' data-member-type='translator' class="js-change_member_type">Translator</a></li>
+              <li><a href='' data-member-type='reviewer' class="js-change_member_type">Reviewer</a></li>
+              {% if is_maintainer  %}
+                <li><a href='' data-member-type='coordinator' class="js-change_member_type">Coordinator</a></li>
+              {% endif %}
+            </ul>
           {% endif %}
+          {% if request.user == selected_user %}
+             <form style="float:right;diplay:inline" method="post" action="{% url team_leave team.project.slug team.language.code %}">{% csrf_token %}
+                 <input name="team_leave" class="leave_team" type="submit" value="{% trans 'Leave' %}" title="Leave team"/>
+             </form>
+          {% endif %}
+          </div>
 
     {% endif %}
 
