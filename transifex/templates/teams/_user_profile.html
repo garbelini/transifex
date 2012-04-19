@@ -1,4 +1,4 @@
-{% load addons %} 
+{% load addons %}
 {% load permissions %}
 {% load tx_action_log %}
 {% load i18n %}
@@ -7,6 +7,24 @@
 
 jQuery(document).ready(function() {
   $('a[rel*=facebox]').facebox()
+
+  jQuery("a.js-change_member_type").unbind("click").on("click", function() {
+    clicked_link = $(this);
+    member_type = $(this).attr('data-member-type');
+    /* BE CAREFUL: 'translator' acts as a placeholder for the actual member
+     * type. See urls.py (hint: regexp 'or') */
+    url = "{% url change_member_type project.slug language.code selected_user 'translator' %}";
+    url = url.replace('translator', member_type);
+
+    jQuery.post(url, function(data) {
+        data = JSON.parse(data);
+        if (data['success']) {
+            jQuery("a.js-change_member_type").removeClass('active');
+            clicked_link.addClass('active');
+        }
+    });
+    return false;
+  });
 });
 
 </script>
@@ -19,14 +37,23 @@ jQuery(document).ready(function() {
 
   <div id="actions" class="clearfix">
     {% if action == 'edit' %}
-    
-      {% if is_coordinator or is_maintainer %}
-        {% if selected_user in team.members.all %}
-          <div id="action">
-            <a href="{% url team_members_remove project.slug language.code selected_user.username %}" class="buttonized fixedw">Remove from team</a>
+
+          {% if is_coordinator or is_maintainer %}
+              <div id="action">
+                <a href="{% url team_members_remove project.slug language.code selected_user.username %}" class="buttonized fixedw">Remove from team</a>
+              </div>
+          {% endif %}
+
+          <div id="member_type">
+              <ul>
+                <li><a href='' data-member-type='translator' class="js-change_member_type">Translator</a></li>
+                <li><a href='' data-member-type='reviewer' class="js-change_member_type">Reviewer</a></li>
+                {% if is_maintainer  %}
+                    <li><a href='' data-member-type='coordinator' class="js-change_member_type">Coordinator</a></li>
+                {% endif %}
+              </ul>
           </div>
-        {% endif %}
-      {% endif %}
+
     {% endif %}
 
     {% if action == 'invite' %}
@@ -43,11 +70,11 @@ jQuery(document).ready(function() {
       <h3 class="sh-label">{% trans "Recommendations" %}</h3>
       <div class="separate-buttons">{% hook "recommend_button.html" %}</div>
     </div>
-    
+
     {% hook "recommendation_list.html" %}
   </div>
 
-  
+
   <div id="recent_activity">
     <div class="separate-header clearfix">
       <h3 class="sh-label">{% trans "Recent team activity" %}</h3>
@@ -59,7 +86,7 @@ jQuery(document).ready(function() {
       <ul class="actionlist nomargin">
         {% for entry in action_log %}
           <li class="i16 {{entry.action_type}}">
-            <p>{{ entry.message|safe }}</p> 
+            <p>{{ entry.message|safe }}</p>
             <span class="timestamp">{{ entry.action_time|timesince }} ago</span>
             </li>
         {% endfor %}
