@@ -7,7 +7,7 @@ import authority
 
 from userena import views as userena_views
 
-from txcommon.forms import EditProfileForm, CustomContactForm
+from txcommon.forms import EditProfileForm
 from txcommon.feeds import UserFeed
 from txcommon.views import profile_edit as txcommon_profile_edit
 
@@ -43,8 +43,6 @@ urlpatterns += patterns('',
     url(r'^ajax/', include('resources.urls.ajax')),
     url(r'^api/', include('api.urls')),
     url(r'^tagging_autocomplete/', include('tagging_autocomplete.urls')),
-    url(r'^contact/$', 'contact_form.views.contact_form',
-        {'form_class': CustomContactForm}, name='contact_form'),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict,
         name='jsi18n'),
 )

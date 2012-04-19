@@ -31,8 +31,8 @@ South>=0.7.2
 userprofile
 BeautifulSoup==3.2.0
 django-staticfiles==1.2.1
+git+git://github.com/mpessas/django-contact-form.git
 
--f http://trac.transifex.org/files/deps/contact_form-0.3.tar.gz
 -f http://trac.transifex.org/files/deps/django-bulk-0.1devel.tar.gz
 -f https://github.com/toastdriven/django-haystack/tarball/259274e4127f723d76b893c87a82777f9490b960#egg=django-haystack
 -f http://trac.transifex.org/files/deps/django-piston-0.2.3.tar.gz
