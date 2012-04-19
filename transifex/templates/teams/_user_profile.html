@@ -41,18 +41,16 @@ jQuery(document).ready(function() {
           {% if is_coordinator or is_maintainer %}
               <div id="action">
                 <a href="{% url team_members_remove project.slug language.code selected_user.username %}" class="buttonized fixedw">Remove from team</a>
+                <ul>
+                  <li><a href='' data-member-type='translator' class="js-change_member_type">Translator</a></li>
+                  <li><a href='' data-member-type='reviewer' class="js-change_member_type">Reviewer</a></li>
+                  {% if is_maintainer  %}
+                      <li><a href='' data-member-type='coordinator' class="js-change_member_type">Coordinator</a></li>
+                  {% endif %}
+                </ul>
               </div>
-          {% endif %}
 
-          <div id="member_type">
-              <ul>
-                <li><a href='' data-member-type='translator' class="js-change_member_type">Translator</a></li>
-                <li><a href='' data-member-type='reviewer' class="js-change_member_type">Reviewer</a></li>
-                {% if is_maintainer  %}
-                    <li><a href='' data-member-type='coordinator' class="js-change_member_type">Coordinator</a></li>
-                {% endif %}
-              </ul>
-          </div>
+          {% endif %}
 
     {% endif %}
 
