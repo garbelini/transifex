@@ -47,6 +47,11 @@ urlpatterns = patterns('',
         view = team_join_deny,
         name = 'team_join_deny',),
     url(
+        regex = TEAM_PARTIAL_URL + r'(?P<username>[\.\w-]+)/make/' +
+            r'(?P<member_type>(translator|reviewer|coordinator))/$',
+        view = change_member_type,
+        name = 'change_member_type',),
+    url(
         regex = TEAM_PARTIAL_URL + r'withdraw/$',
         view = team_join_withdraw,
         name = 'team_join_withdraw',),
