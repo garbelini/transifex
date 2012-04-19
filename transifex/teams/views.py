@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.views.decorators.http import require_POST
 from django.db import IntegrityError
 from django.db import transaction
 from django.db.models import Q, Sum
@@ -250,6 +251,42 @@ def team_detail(request, project_slug, language_code):
         "total_entries": total_entries,
         "coordinators": coordinators,
     }, context_instance=RequestContext(request))
+
+@transaction.commit_on_success
+@require_POST
+def change_member_type(request, project_slug, language_code, username, member_type):
+    """
+    Switch 'member type' from the current one to
+    - coordinator
+    - reviewer
+    - translator
+    """
+    user = get_object_or_404(User, username=username)
+    team = get_object_or_404(Team,
+        project__slug__exact=project_slug,
+        language__code__iexact=language_code)
+
+    request_by_maintainer = team.project.maintainers.filter(
+        id=request.user.id).exists()
+    success = True
+
+    if member_type == 'translator':
+        team.coordinators.remove(user)
+        team.reviewers.remove(user)
+        team.members.add(user)
+    elif member_type == 'reviewer':
+        team.members.remove(user)
+        team.coordinators.remove(user)
+        team.reviewers.add(user)
+    elif member_type == 'coordinator' and request_by_maintainer:
+        team.reviewers.remove(user)
+        team.members.remove(user)
+        team.coordinators.add(user)
+    else:
+        success = False
+
+    response = simplejson.dumps({'success': success})
+    return HttpResponse(response)
 
 def _team_members_common_context(request, project_slug, language_code):
     """
